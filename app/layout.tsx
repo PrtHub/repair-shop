@@ -13,25 +13,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const appName = "FixItFast";
+
 export const metadata: Metadata = {
   title: {
-    template: "%s | Repair Shop",
-    default: "Repair Shop",
+    template: `%s | ${appName}`,
+    default: appName,
   },
   description:
-    "its a repair shop, you can repair your phone here, if you want. we will repair your phone for free.",
-    applicationName: "Repair Shop",
-    openGraph: {
-        title: "Repair Shop",
-        description:
-            "its a repair shop, you can repair your phone here, if you want. we will repair your phone for free.",
-        // images: [
-        //     {
-        //         url: "https://res.cloudinary.com/artifact-z7/image/upload/v1694991250/repair-shop/repair-shop_og-image.png",
-        //     },
-        // ],
-    },
-    keywords: ["repair", "shop", "phone", "repair shop", "phone repair", 'nextjs', 'vercel', 'sentry', 'react', 'next', 'tailwindcss', 'typescript', 'javascript', 'vercel', 'vercel edge functions', 'vercel edge middleware', 'vercel edge routes'],
+    `Welcome to ${appName}, where we fix your devices quickly and efficiently.`,
+  applicationName: appName,
+  openGraph: {
+    title: appName,
+    description:
+      `${appName} - Your one-stop solution for all device repairs.`,
+    // images: [
+    //   {
+    //     url: "https://res.cloudinary.com/artifact-z7/image/upload/v1694991250/repair-shop/repair-shop_og-image.png",
+    //   },
+    // ],
+  },
+  keywords: ["repair", "shop", "phone", "repair shop", "phone repair", 'nextjs', 'vercel', 'sentry', 'react', 'next', 'tailwindcss', 'typescript', 'javascript', 'vercel', 'vercel edge functions', 'vercel edge middleware', 'vercel edge routes'],
 };
 
 export default function RootLayout({

@@ -3,14 +3,14 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: {
-        template: "%s | Repair Shop",
-        default: "Repair Shop",
+        template: "%s | FixItFast",
+        default: "FixItFast",
     },
     description:
         "its a repair shop, you can repair your phone here, if you want. we will repair your phone for free.",
-    applicationName: "Repair Shop",
+    applicationName: "FixItFast",
     openGraph: {
-        title: "Repair Shop",
+        title: "FixItFast",
         description:
             "its a repair shop, you can repair your phone here, if you want. we will repair your phone for free.",
         // images: [
