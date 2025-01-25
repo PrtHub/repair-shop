@@ -15,13 +15,21 @@ import { Button } from "@/components/ui/button";
 import { InputWithLabel } from "@/components/inputs/InputWithLabel";
 import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
+import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 
 type Props = {
   ticket?: SelectTicketSchemaType;
   customer?: SelectCustomerSchemaType;
+  techs?: {
+    id: string;
+    description: string;
+  }[];
+  isEditable?: boolean;
 };
 
-const TicketForm = ({ ticket, customer }: Props) => {
+const TicketForm = ({ ticket, customer, techs, isEditable = true }: Props) => {
+  const isManager = Array.isArray(techs);
+
   const defaultValues = {
     id: ticket?.id || 0,
     customerId: ticket?.customerId || customer?.id || 0,
@@ -49,8 +57,11 @@ const TicketForm = ({ ticket, customer }: Props) => {
     <div className="flex flex-col gap-1 sm:px-8 py-4">
       <div>
         <h2 className="text-2xl font-bold">
-          {ticket?.id ? "Edit" : "New"} Ticket{" "}
-          {ticket?.id ? `#${ticket.id}` : "Form"}
+          {ticket?.id && isEditable
+            ? `Edit Ticket # ${ticket.id}`
+            : ticket?.id
+            ? `View Ticket # ${ticket.id}`
+            : "New Ticket Form"}
         </h2>
       </div>
       <Form {...form}>
@@ -62,44 +73,64 @@ const TicketForm = ({ ticket, customer }: Props) => {
             <InputWithLabel<InsertTicketSchemaType>
               fieldTitle="Title"
               nameInSchema="title"
+              disabled={!isEditable}
             />
+            {isManager ? (
+              <SelectWithLabel<InsertTicketSchemaType>
+                fieldTitle="Tech ID"
+                nameInSchema="tech"
+                data={[
+                  {
+                    id: "new-ticket@example.com",
+                    description: "new-ticket@example.com",
+                  },
+                  ...techs,
+                ]}
+              />
+            ) : (
+              <InputWithLabel<InsertTicketSchemaType>
+                fieldTitle="Tech"
+                nameInSchema="tech"
+                disabled={true}
+              />
+            )}
 
-            <InputWithLabel<InsertTicketSchemaType>
-              fieldTitle="Tech"
-              nameInSchema="tech"
-              disabled={true}
-            />
-
-            <CheckboxWithLabel<InsertTicketSchemaType>
-              fieldTitle="Completed"
-              nameInSchema="completed"
-              message="Yes"
-            />
+            {ticket?.id && (
+              <CheckboxWithLabel<InsertTicketSchemaType>
+                fieldTitle="Completed"
+                nameInSchema="completed"
+                message="Yes"
+                disabled={!isEditable}
+              />
+            )}
             <TextAreaWithLabel<InsertTicketSchemaType>
               fieldTitle="Description"
               nameInSchema="description"
               className="h-40"
+              disabled={!isEditable}
             />
 
-            <div className="flex gap-2">
-              <Button
-                type="submit"
-                className="w-3/4"
-                variant="default"
-                title="Save"
-              >
-                Save
-              </Button>
+            {isEditable && (
+              <div className="flex gap-2">
+                <Button
+                  type="submit"
+                  className="w-3/4"
+                  variant="default"
+                  title="Save"
+                >
+                  Save
+                </Button>
 
-              <Button
-                type="button"
-                variant="destructive"
-                title="Reset"
-                onClick={handleReset}
-              >
-                Reset
-              </Button>
-            </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  title="Reset"
+                  onClick={handleReset}
+                >
+                  Reset
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-4 w-full max-w-xs">

@@ -2,6 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+
 import { Form } from "@/components/ui/form";
 
 import {
@@ -14,12 +16,17 @@ import { Button } from "@/components/ui/button";
 import { SelectWithLabel } from "@/components/inputs/SelectWithLabel";
 import { TextAreaWithLabel } from "@/components/inputs/TextAreaWithLabel";
 import { StatesArray } from "@/constants/states";
+import { CheckboxWithLabel } from "@/components/inputs/CheckboxWithLabel";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   customer?: SelectCustomerSchemaType;
 };
 
 const CustomerForm = ({ customer }: Props) => {
+  const { getPermission, isLoading } = useKindeBrowserClient();
+  const isManager = !isLoading && getPermission("manager")?.isGranted;
+
   const defaultValues = {
     id: customer?.id || 0,
     firstName: customer?.firstName || "",
@@ -105,6 +112,15 @@ const CustomerForm = ({ customer }: Props) => {
               nameInSchema="notes"
               className="h-20"
             />
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : isManager && customer?.id ? (
+              <CheckboxWithLabel<InsertCustomerSchemaType>
+                fieldTitle="Active"
+                nameInSchema="active"
+                message="Yes"
+              />
+            ) : null}
             <div className="flex gap-2">
               <Button
                 type="submit"
